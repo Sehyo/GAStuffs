@@ -1,2 +1,4 @@
-﻿  Gene.cpp
+﻿  Main.cpp
+c:\users\merlin\documents\visual studio 2015\projects\gaassignmentadjn\gaassignmentadjn\main.cpp(23): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\merlin\documents\visual studio 2015\projects\gaassignmentadjn\gaassignmentadjn\main.cpp(55): warning C4018: '<': signed/unsigned mismatch
   GAAssignmentADjn.vcxproj -> C:\Users\Merlin\Documents\Visual Studio 2015\Projects\GAAssignmentADjn\Debug\GAAssignmentADjn.exe
