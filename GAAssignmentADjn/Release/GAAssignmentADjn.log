@@ -1,0 +1,12 @@
+﻿  Genome.cpp
+Genome.cpp(53): warning C4018: '<': signed/unsigned mismatch
+Genome.cpp(65): warning C4018: '<': signed/unsigned mismatch
+  Main.cpp
+Main.cpp(22): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+Main.cpp(56): warning C4018: '<': signed/unsigned mismatch
+  Generating code
+  6 of 423 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GAAssignmentADjn.vcxproj -> C:\Users\Merlin\Documents\Visual Studio 2015\Projects\GAAssignmentADjn\Release\GAAssignmentADjn.exe
