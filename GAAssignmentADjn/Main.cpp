@@ -6,29 +6,34 @@
 #include <vector>
 #include <algorithm>
 
-#define GENOMECOUNT 100
+#define GENOMECOUNT 10
 #define CYCLES 99999999999999
 #define ELITISM FALSE // Don't use "true" to maintain portability between compilers.
 #define TRUE (1==1) // Don't use "true" to maintain portability between compilers.
 #define FALSE (1==0)
-#define BATTLE_ROYALE_SIZE 10
+#define BATTLE_ROYALE_SIZE 5
 
 Genome& getBestGenome(std::vector<Genome>&);
 std::vector<int> battleRoyale(std::vector<Genome>&);
 std::vector<Genome> evolveGenomes(std::vector<Genome>&);
+int bestCandidate(std::vector<int>, std::vector<Genome>&);
+
 
 int main()
 {
 	Data data;
-	srand(time(NULL));
 	std::vector<Genome> genomes;
 	genomes.reserve(GENOMECOUNT); // Reserve memory for genes.
 	std::cout << "Creating genomes" << std::endl;
 	for(int i = 0; i < GENOMECOUNT; i++) genomes.push_back(Genome(&data)); // Populate genome pool
+	std::cout << "GENOME POOL CREATED" << std::endl;
+	int x;
+	//std::cin >> x;
 	for(int i = 0; i < CYCLES; i++)
 	{
 		genomes = evolveGenomes(genomes);
-		if(i % 1000 == 0)
+		
+		if(i % 10000 == 0)
 		{
 			std::cout << "Completed Cycle: " << i << std::endl;
 			std::cout << "Candidate Solution: " << std::endl;
@@ -68,22 +73,29 @@ std::vector<int> battleRoyale(std::vector<Genome>& genomes)
 {
 	std::vector<int> battleRoyale;
 	battleRoyale.reserve(BATTLE_ROYALE_SIZE);
-	int candidateGenome;
-	int candidateGenomeTwo;
-	for(int i = 0; i < BATTLE_ROYALE_SIZE; i++)
+	int candidateGenome, candidateGenomeTwo;
+	for(;battleRoyale.size() < BATTLE_ROYALE_SIZE;)
 	{
 		int randId = rand() % genomes.size();
-		if(i == 0) candidateGenome = randId;
-		if(i == 1) candidateGenomeTwo = randId;
+		while(std::find(battleRoyale.begin(), battleRoyale.end(), randId) != battleRoyale.end()) randId = rand() % genomes.size();
 		battleRoyale.push_back(randId);
-		if(i > 1)
-		{
-			if(genomes.at(randId) < genomes.at(candidateGenome) && randId != candidateGenomeTwo) candidateGenome = randId;
-			if(genomes.at(randId) < genomes.at(candidateGenomeTwo) && randId != candidateGenome) candidateGenomeTwo = randId;
-		}
 	}
+	// Get Best Candidates...
+	candidateGenome = battleRoyale.at(bestCandidate(battleRoyale, genomes));
+	battleRoyale.erase(std::remove(battleRoyale.begin(), battleRoyale.end(), candidateGenome), battleRoyale.end());
+	candidateGenomeTwo = battleRoyale.at(bestCandidate(battleRoyale, genomes));
 	std::vector<int> candidates;
 	candidates.push_back(candidateGenome);
 	candidates.push_back(candidateGenomeTwo);
 	return candidates;
+}
+
+int bestCandidate(std::vector<int> candidates, std::vector<Genome>& genomes)
+{
+	int bestCandidate = 0;
+	for(int i = 1; i < candidates.size(); i++)
+	{
+		if(genomes.at(candidates.at(i)) < genomes.at(candidates.at(bestCandidate))) bestCandidate = i;
+	}
+	return bestCandidate;
 }

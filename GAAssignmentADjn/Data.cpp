@@ -7,7 +7,6 @@ Data::Data()
 {
 	std::ifstream data("..\\Debug\\data2.txt");
 	std::string line;
-	double diversity = 0;
 	for (int i = 0; std::getline(data, line); i++)
 	{
 		std::string xs = "", xy = "";
@@ -23,6 +22,8 @@ Data::Data()
 		getX(i) = x;
 		getY(i) = y;
 	}
+	int x;
+	//std::>> x;
 }
 
 double& Data::getX(int i)

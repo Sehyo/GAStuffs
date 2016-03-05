@@ -1,5 +1,6 @@
 #include "Data.h"
 #include <vector>
+#include <random>
 
 class Genome
 {
@@ -11,8 +12,12 @@ public:
 	bool operator<(const Genome &otherGenome) const { return fitness < otherGenome.fitness; }
 	void printFunction();
 	void mutate();
-private:
 	std::vector<double> genes;
+	static std::mt19937 mt;
+	static std::random_device rd;
+	double randomCoValue();
+private:
+	
 	double fitness;
 	Data* data;
 };
