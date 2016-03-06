@@ -1,9 +1,8 @@
-﻿  Genome.cpp
-Genome.cpp(74): warning C4018: '<': signed/unsigned mismatch
-Genome.cpp(92): warning C4018: '<': signed/unsigned mismatch
+﻿  Data.cpp
+Data.cpp(25): warning C4101: 'x': unreferenced local variable
   Generating code
-  2 of 492 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  3 of 506 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    18 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GAAssignmentADjn.vcxproj -> C:\Users\Merlin\Documents\Visual Studio 2015\Projects\GAAssignmentADjn\Release\GAAssignmentADjn.exe
