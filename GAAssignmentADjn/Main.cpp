@@ -18,8 +18,6 @@ std::vector<int> battleRoyale(std::vector<Genome>&);
 std::vector<Genome> evolveGenomes(std::vector<Genome>&);
 int bestCandidate(std::vector<int>, std::vector<Genome>&);
 
-int currentCoefficient = 0;
-
 int main()
 {
 	Data data;
@@ -35,12 +33,7 @@ int main()
 		if(i % 1000 == 0)
 		{
 			getBestGenome(genomes).printFunction();
-			currentCoefficient++;
-			if(currentCoefficient > 5)
-			{
-				std::cout << "FINISHED" << std::endl;
-				std::cin >> currentCoefficient;
-			}
+			std::cout << getBestGenome(genomes).getFitness() << std::endl;
 		}
 	}
 	getBestGenome(genomes).printFunction();
@@ -77,7 +70,7 @@ std::vector<int> battleRoyale(std::vector<Genome>& genomes) // Not sure if works
 	battleRoyale.reserve(BATTLE_ROYALE_SIZE);
 	int candidateGenome, candidateGenomeTwo;
 	for(;battleRoyale.size() < BATTLE_ROYALE_SIZE;)
-	{;
+	{
 		int randId = genomes.at(0).randomInt(0, genomes.size()-1);
 		while(std::find(battleRoyale.begin(), battleRoyale.end(), randId) != battleRoyale.end()) randId = genomes.at(0).randomInt(0, genomes.size()-1);
 		battleRoyale.push_back(randId);

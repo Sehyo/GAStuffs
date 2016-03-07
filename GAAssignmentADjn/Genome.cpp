@@ -9,8 +9,8 @@
 
 typedef unsigned int uint;
 
-#define MUTATION_RATE 1 // SET this somewhere between 0 - 100;
-#define MAX_NUMBER 500 // Maximum number for a coefficient
+#define MUTATION_RATE 10 // SET this somewhere between 0 - 100;
+#define MAX_NUMBER 100000 // Maximum number for a coefficient
 
 std::random_device Genome::rd;
 std::mt19937 Genome::mt(rd());
@@ -63,7 +63,6 @@ double Genome::randomCoValue()
 
 void Genome::mutate()
 {
-	
 	for(int i = 0; i < genes.size(); i++)
 		if(randomInt(0,100) < MUTATION_RATE)
 		{
@@ -78,8 +77,8 @@ Genome Genome::crossover(Genome& otherGenome)
 	Genome loveChild(data);
 	for(int i = 0; i < genes.size(); i++)
 	{
-			if(randomInt(0,100) < 50) loveChild.genes.at(i) = genes.at(i);
-			else loveChild.genes.at(i) = otherGenome.genes.at(i);
+		if(randomInt(0,100) < 50) loveChild.genes.at(i) = genes.at(i);
+		else loveChild.genes.at(i) = otherGenome.genes.at(i);
 	}
 	loveChild.evaluateFitness();
 	return loveChild;	

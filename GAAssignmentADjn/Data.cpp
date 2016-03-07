@@ -5,7 +5,7 @@
 
 Data::Data()
 {
-	std::ifstream data("..\\Debug\\data2.txt");
+	std::ifstream data("..\\Debug\\data.txt");
 	std::string line;
 	for (int i = 0; std::getline(data, line); i++)
 	{
@@ -22,8 +22,6 @@ Data::Data()
 		getX(i) = x;
 		getY(i) = y;
 	}
-	int x;
-	//std::>> x;
 }
 
 double& Data::getX(int i)
