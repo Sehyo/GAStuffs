@@ -12,14 +12,15 @@ public:
 	bool operator<(const Genome &otherGenome) const { return fitness < otherGenome.fitness; }
 	void printFunction();
 	void mutate();
-	std::vector<double> genes;
+	std::vector<float> genes;
 	static std::mt19937 mt;
 	static std::random_device rd;
 	double randomCoValue();
 	int randomInt(int, int);
 	Data* data;
+	float variableMutationRate;
 private:
-	int currentCoefficient = 0;
+	double Genome::gaussian();
 	double fitness;
 	
 };

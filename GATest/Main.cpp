@@ -5,21 +5,25 @@
 #include "Data.h"
 #include <vector>
 #include <algorithm>
+#include <limits>
 
-#define GENOMECOUNT 100
+#define GENOMECOUNT 30
 #define CYCLES 99999999999999
 #define ELITISM FALSE // Don't use "true" to maintain portability between compilers.
 #define TRUE (1==1) // Don't use "true" to maintain portability between compilers.
 #define FALSE (1==0)
-#define BATTLE_ROYALE_SIZE 10
+#define BATTLE_ROYALE_SIZE 5
 
 Genome& getBestGenome(std::vector<Genome>&);
+Genome& getWorstGenome(std::vector<Genome>&);
 std::vector<int> battleRoyale(std::vector<Genome>&);
 std::vector<Genome> evolveGenomes(std::vector<Genome>&);
 int bestCandidate(std::vector<int>, std::vector<Genome>&);
+double getAverageFitness(std::vector<Genome>&);
 
 int main()
 {
+	std::cout.precision(std::numeric_limits<double>::max_digits10);
 	Data data;
 	Genome genomerino(&data);
 	std::vector<Genome> genomes;
@@ -32,9 +36,19 @@ int main()
 		genomes = evolveGenomes(genomes);
 		if(i % 1000 == 0)
 		{
-			getBestGenome(genomes).printFunction();
+			//getBestGenome(genomes).printFunction();
 			std::cout << getBestGenome(genomes).getFitness() << std::endl;
+			//std::cout << "PRINTING OUT ALL GENOMES:" << std::endl;
+			/*for(int i = 0; i < GENOMECOUNT; i++)
+			{
+				std::cout << "Genome " << i << ": ";
+				genomes.at(i).printFunction();
+				std::cout << std::endl;
+			}
+			std::cout << "------FINISHED------" << std::endl; */
 		}
+		if(i == 5000)
+			for(int i = 0; i < GENOMECOUNT; i++) genomes.at(i).variableMutationRate = 100;
 	}
 	getBestGenome(genomes).printFunction();
 	do{} while (true);
@@ -62,6 +76,22 @@ Genome& getBestGenome(std::vector<Genome>& genomes) // Definitely works.
 		if(genomes.at(i).getFitness() < currentBest->getFitness())
 			currentBest = &genomes.at(i);
 	return *currentBest;
+}
+
+Genome& getWorstGenome(std::vector<Genome>& genomes) // Definitely works.
+{
+	Genome* currentBest = &genomes.at(0);
+	for(int i = 1; i < genomes.size(); i++)
+		if(genomes.at(i).getFitness() > currentBest->getFitness())
+			currentBest = &genomes.at(i);
+	return *currentBest;
+}
+
+double getAverageFitness(std::vector<Genome>& genomes)
+{
+	double totalFitness = 0;
+	for(int i = 0; i < genomes.size(); i++) totalFitness += genomes.at(i).getFitness();
+	return totalFitness / genomes.size();
 }
 
 std::vector<int> battleRoyale(std::vector<Genome>& genomes) // Not sure if works..

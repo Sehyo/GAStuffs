@@ -9,9 +9,10 @@
 
 typedef unsigned int uint;
 
-#define MUTATION_RATE 10 // SET this somewhere between 0 - 100;
-#define MAX_NUMBER 500 // Maximum number for a coefficient
+#define MUTATION_RATE 5 // SET this somewhere between 0 - 100;
+#define MAX_NUMBER 5001 // Maximum number for a coefficient
 #define BINARY_CROSS 0
+#define GAUSSIAN_DEVIATION 1
 
 std::random_device Genome::rd;
 std::mt19937 Genome::mt(rd());
@@ -29,6 +30,7 @@ Genome::Genome(Data* data)
 		Genome::genes.push_back(randomCoValue());
 		if(randomInt(0,100) < 50) genes.at(i) *= -1;
 	}
+	Genome::variableMutationRate = MUTATION_RATE;
 	evaluateFitness();
 }
 
@@ -56,19 +58,26 @@ int Genome::randomInt(int min, int max)
 	return dist(mt);
 }
 
+double Genome::gaussian()
+{
+	std::normal_distribution<double> gaussian(0, GAUSSIAN_DEVIATION);
+	return gaussian(mt);
+}
+
 double Genome::randomCoValue()
 {
 	std::uniform_real_distribution<double> dist(MAX_NUMBER * -1, MAX_NUMBER);
+	//std::normal_distribution<double> dist(0, 1);
 	return dist(mt);
 }
 
 void Genome::mutate()
 {
+
 	for(int i = 0; i < genes.size(); i++)
-		if(randomInt(0,100) < MUTATION_RATE)
+		if(randomInt(0,100) < variableMutationRate)
 		{
-				genes.at(i) = randomCoValue();
-				if(randomInt(0, 100) < 50) genes.at(i) *= -1;
+			genes.at(i) += gaussian();
 		}
 	evaluateFitness();
 }
