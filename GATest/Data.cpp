@@ -11,7 +11,7 @@ Data::Data()
 	{
 		std::string xs = "", xy = "";
 
-		bool addToXs = true;
+		bool addToXs = (1==1);
 		for (char& c : line)
 		{
 			if (c != ';' && addToXs) xs += c;

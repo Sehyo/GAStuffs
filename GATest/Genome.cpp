@@ -9,8 +9,8 @@
 
 typedef unsigned int uint;
 
-#define MUTATION_RATE 5 // SET this somewhere between 0 - 100;
-#define MAX_NUMBER 5001 // Maximum number for a coefficient
+#define MUTATION_RATE 2 // SET this somewhere between 0 - 100;
+#define MAX_NUMBER 5001 // Maximum number for a coefficient at initialisation.
 #define BINARY_CROSS 0
 #define GAUSSIAN_DEVIATION 1
 
@@ -34,8 +34,8 @@ Genome::Genome(Data* data)
 	evaluateFitness();
 }
 
-void Genome::evaluateFitness() // Need better function...
-{							  // Allows the last coefficients to have big bias.
+void Genome::evaluateFitness()
+{							  
 	fitness = 0;
 	for (int i = 0; i < 577; i++)
 	{
@@ -67,7 +67,6 @@ double Genome::gaussian()
 double Genome::randomCoValue()
 {
 	std::uniform_real_distribution<double> dist(MAX_NUMBER * -1, MAX_NUMBER);
-	//std::normal_distribution<double> dist(0, 1);
 	return dist(mt);
 }
 
@@ -75,10 +74,7 @@ void Genome::mutate()
 {
 
 	for(int i = 0; i < genes.size(); i++)
-		if(randomInt(0,100) < variableMutationRate)
-		{
-			genes.at(i) += gaussian();
-		}
+		if(randomInt(0,100) < variableMutationRate) genes.at(i) += gaussian();
 	evaluateFitness();
 }
 

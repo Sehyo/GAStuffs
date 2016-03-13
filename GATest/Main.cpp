@@ -7,12 +7,13 @@
 #include <algorithm>
 #include <limits>
 
-#define GENOMECOUNT 30
+#define GENOMECOUNT 32
 #define CYCLES 99999999999999
 #define ELITISM FALSE // Don't use "true" to maintain portability between compilers.
 #define TRUE (1==1) // Don't use "true" to maintain portability between compilers.
 #define FALSE (1==0)
-#define BATTLE_ROYALE_SIZE 5
+#define BATTLE_ROYALE_SIZE 4
+#define CROSSOVER_RATE 70
 
 Genome& getBestGenome(std::vector<Genome>&);
 Genome& getWorstGenome(std::vector<Genome>&);
@@ -36,40 +37,31 @@ int main()
 		genomes = evolveGenomes(genomes);
 		if(i % 1000 == 0)
 		{
-			//getBestGenome(genomes).printFunction();
-			std::cout << getBestGenome(genomes).getFitness() << std::endl;
-			//std::cout << "PRINTING OUT ALL GENOMES:" << std::endl;
-			/*for(int i = 0; i < GENOMECOUNT; i++)
-			{
-				std::cout << "Genome " << i << ": ";
-				genomes.at(i).printFunction();
-				std::cout << std::endl;
-			}
-			std::cout << "------FINISHED------" << std::endl; */
+			std::cout << i << ":" << getAverageFitness(genomes) << std::endl;
 		}
-		if(i == 5000)
-			for(int i = 0; i < GENOMECOUNT; i++) genomes.at(i).variableMutationRate = 100;
 	}
 	getBestGenome(genomes).printFunction();
-	do{} while (true);
+	do{} while (TRUE);
 	return 0;
 }
 
-std::vector<Genome> evolveGenomes(std::vector<Genome>& genomes) // Maybe work? -- Check
+std::vector<Genome> evolveGenomes(std::vector<Genome>& genomes)
 {
 	std::vector<Genome> spoiledKids;
-	spoiledKids.reserve(GENOMECOUNT);
+	spoiledKids.reserve(genomes.size());
 	if(ELITISM) spoiledKids.push_back(getBestGenome(genomes));
-	while(spoiledKids.size() < GENOMECOUNT)
+	while(spoiledKids.size() < genomes.size())
 	{
 		std::vector<int> candidates = battleRoyale(genomes);
-		spoiledKids.push_back(genomes.at(candidates.at(0)).crossover(genomes.at(candidates.at(1))));
+		if(genomes.at(0).randomInt(0,100) < CROSSOVER_RATE)	spoiledKids.push_back(genomes.at(candidates.at(0)).crossover(genomes.at(candidates.at(1))));
+		else if(genomes.at(candidates.at(0)) < genomes.at(candidates.at(1)))	spoiledKids.push_back(genomes.at(candidates.at(0)));
+		else spoiledKids.push_back(genomes.at(candidates.at(1)));
 	}
 	for(int i = 0; i < spoiledKids.size(); i++) spoiledKids.at(i).mutate();
 	return spoiledKids;
 }
 
-Genome& getBestGenome(std::vector<Genome>& genomes) // Definitely works.
+Genome& getBestGenome(std::vector<Genome>& genomes)
 {
 	Genome* currentBest = &genomes.at(0);
 	for(int i = 1; i < genomes.size(); i++)
@@ -78,7 +70,7 @@ Genome& getBestGenome(std::vector<Genome>& genomes) // Definitely works.
 	return *currentBest;
 }
 
-Genome& getWorstGenome(std::vector<Genome>& genomes) // Definitely works.
+Genome& getWorstGenome(std::vector<Genome>& genomes)
 {
 	Genome* currentBest = &genomes.at(0);
 	for(int i = 1; i < genomes.size(); i++)
@@ -94,7 +86,7 @@ double getAverageFitness(std::vector<Genome>& genomes)
 	return totalFitness / genomes.size();
 }
 
-std::vector<int> battleRoyale(std::vector<Genome>& genomes) // Not sure if works..
+std::vector<int> battleRoyale(std::vector<Genome>& genomes)
 {
 	std::vector<int> battleRoyale; // Vector of indices of genomes in genomes argument.
 	battleRoyale.reserve(BATTLE_ROYALE_SIZE);
